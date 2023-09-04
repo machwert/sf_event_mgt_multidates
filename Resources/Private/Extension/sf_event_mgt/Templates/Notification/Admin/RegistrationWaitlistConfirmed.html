@@ -1,0 +1,33 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<f:if condition="{registration.startdatetime}">
+    <f:then>
+        <p>Bestätigte Whitelist-Registrierung für die Schulung:<br>
+            <b>{event.title}</b>
+        </p>
+        <p>{f:format.date(date: registration.startdatetime, format: '%d.%m.%Y - %H:%M')} Uhr</p>
+    </f:then>
+    <f:else>
+        <p>Whitelist-Anfrage für die Schulung:<br>
+            <b>{event.title}</b>
+        </p>
+    </f:else>
+</f:if>
+
+<ul>
+    <li>{registration.gender}</li>
+    <li>Vorname: {registration.firstname}</li>
+    <li>Nachname: {registration.lastname}</li>
+    <li>Strasse: {registration.address}</li>
+    <li>PLZ: {registration.zip}</li>
+    <li>Ort: {registration.city}</li>
+    <li>Land: {registration.country}</li>
+    <li>E-Mail: {registration.email}</li>
+    <li>Tel: {registration.phone}</li>
+    <li>Geburtsdatum: {f:format.date(date: registration.dateOfBirth, format: '%d.%m.%Y')}</li>
+    <li>Anmerkung: {registration.notes}</li>
+</ul>
+
+<f:render partial="Notification/RegistrationFields" arguments="{registration: registration}"/>
+
+</html>

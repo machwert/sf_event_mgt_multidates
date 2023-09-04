@@ -1,0 +1,5 @@
+plugin.tx_sfeventmgt.view.layoutRootPaths.2 = EXT:sf_event_mgt_multidates/Resources/Private/Extension/sf_event_mgt/Layouts/
+plugin.tx_sfeventmgt.view.templateRootPaths.2 = EXT:sf_event_mgt_multidates/Resources/Private/Extension/sf_event_mgt/Templates/
+plugin.tx_sfeventmgt.view.partialRootPaths.2 = EXT:sf_event_mgt_multidates/Resources/Private/Extension/sf_event_mgt/Partials/
+
+page.includeCSS.sf_event_mgt_multidates =  EXT:sf_event_mgt_multidates/Resources/Public/StyleSheet/sfeventmgtmultidates.css

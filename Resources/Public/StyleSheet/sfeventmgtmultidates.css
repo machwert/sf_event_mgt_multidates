@@ -1,0 +1,22 @@
+.startdates:after {
+    content:' ';
+    clear:both;
+    float:none;
+    display:block;
+}
+.startdate-button {
+    background-color:#efefef;
+    color:#777;
+    padding:8px 12px;
+    display:inline-block;
+    border-radius:5px;
+    margin:0 10px 10px 0;
+    display:inline-block;
+    float:left;
+    cursor:pointer;
+}
+.startdate-button.active {
+    background-color:#f37318;
+    color:#ffffff;
+    cursor:default;
+}

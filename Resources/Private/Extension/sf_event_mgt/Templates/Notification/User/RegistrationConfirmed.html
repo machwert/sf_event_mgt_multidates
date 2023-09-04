@@ -1,0 +1,27 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<p>Hallo {registration.firstname} {registration.lastname},</p>
+<f:if condition="{registration.startdatetime}">
+    <f:then>
+        <p>hiermit bestätige ich die Anmeldung zu folgender Schulung:</p>
+        <ul>
+            <li>{event.title} - ({f:format.date(date: registration.startdatetime, format: '%d.%m.%Y - %H:%M')} Uhr)</li>
+        </ul>
+        <f:if condition="{event.cancellationPossible}">
+            <p>Wenn Du die Anmeldung stornieren möchtest, klicke bitte folgenden Link:</p>
+            <p>
+                <f:uri.action action="cancelRegistration" arguments="{reguid: '{registration.uid}', hmac: '{hmac}'}" absolute="TRUE" controller="Event" extensionName="sfeventmgt" pluginName="Pieventregistration" />
+            </p>
+        </f:if>
+    </f:then>
+    <f:else>
+        <p>hiermit bestätige ich die Anfrage zu folgender Schulung:</p>
+        <ul>
+            <li>{event.title}</li>
+        </ul>
+        <p>Wir werden uns schnellstmöglich bei Dir melden.</p>
+    </f:else>
+</f:if>
+<f:format.html>{settings.notification.senderSignature}</f:format.html>
+
+</html>

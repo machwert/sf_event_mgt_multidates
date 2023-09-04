@@ -1,0 +1,255 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:e="http://typo3.org/ns/DERHANSEN/SfEventMgt/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<f:layout name="Default" />
+
+<f:section name="main">
+    <f:variable name="bookingBtnText">Buchen</f:variable>
+    <f:variable name="linktoevent">
+        <f:uri.action action="detail" arguments="{event : event}" pageUid="{settings.detailPid}" absolute="1" />
+    </f:variable>
+
+    <f:if condition="{event}">
+        <e:title pageTitle="{event.metaTitle}" />
+        <e:metaTag property="og:title" content="{event.metaTitle}" />
+        <e:metaTag name="keywords" content="{event.metaKeywords}" />
+        <e:metaTag name="description" content="{event.metaDescription}" />
+
+        <article>
+            <div class="content">
+                <header>
+                    <h1>{event.title}</h1>
+                </header>
+
+                <div class="ce-textpic ce-right ce-intext">
+                    <f:if condition="{event.image}">
+                        <div class="ce-gallery" data-ce-columns="1" data-ce-images="1">
+                            <div class="ce-row">
+                                <div class="ce-column">
+                                    <figure class="image">
+                                        <f:for each="{event.image}" as="image">
+                                            <f:image src="{image.uid}" alt="" treatIdAsReference="TRUE" width="300" />
+                                        </f:for>
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+                    </f:if>
+                    <div class="ce-bodytext">
+                        <div class="event-detail-row">
+                            <div class="event-detail-value event-teaser">
+                                {event.teaser}
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+
+                        <div class="cta-buttons-event">
+                            <div class="dropdown-btn-wrapper">
+                                <a class="tertiary-btn icon-btn icon-calendar dropdown-btn"><i class="fa-regular fa-calendar"></i>in den Kalender</a>
+                                <ul class="popup dropdown-content">
+                                    <li><f:link.action class="tertiary-btn icon-btn icon-copy" action="icalDownload" arguments="{event : event}">.ics Datei herunterladen</f:link.action></li>
+                                    <li><f:link.external class="tertiary-btn icon-btn icon-copy" uri="{e:uri.onlineCalendar(type: 'google', event: event)}" target="_blank">Google Kalender</f:link.external></li>
+                                    <li><f:link.external class="tertiary-btn icon-btn icon-copy" uri="{e:uri.onlineCalendar(type: 'outlook', event: event)}" target="_blank">Outlook Kalender</f:link.external></li>
+                                    <li><f:link.external class="tertiary-btn icon-btn icon-copy" uri="{e:uri.onlineCalendar(type: 'office365', event: event)}" target="_blank">Office 365 Kalender</f:link.external></li>
+                                    <li><f:link.external class="tertiary-btn icon-btn icon-copy" uri="{e:uri.onlineCalendar(type: 'yahoo', event: event)}" target="_blank">Yahoo Kalender</f:link.external></li>
+                                </ul>
+                            </div>
+
+                            <div class="dropdown-btn-wrapper">
+                                <a class="tertiary-btn icon-btn icon-share dropdown-btn"><i class="fa-solid fa-share-nodes"></i>teilen</a>
+                                <ul class="popup dropdown-content">
+                                    <li><a class="tertiary-btn icon-btn icon-email" href="mailto:?subject=Empfehlung: {event.title}&amp;body=Hallo,%0D%0A%0D%0Aich empfehle folgende Website:%0D%0A{linktoevent}">E-Mail</a></li>
+                                    <li><a class="tertiary-btn icon-btn icon-facebook" href="" onclick="window.open('https://www.facebook.com/share.php?u='+ window.location.href, '_blank', 'toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=400,height=400'); return false;">Facebook</a></li>
+                                    <li><a class="tertiary-btn icon-btn icon-twitter" href="https://twitter.com/share" target="_blank">Twitter</a></li>
+                                    <li><a class="tertiary-btn icon-btn icon-copy" href="" onclick="copyToClipboard('event-{event.uid}')">Zwischenablage</a></li>
+                                </ul>
+                            </div>
+                            <a class="tertiary-btn icon-btn icon-print" href="javascript:print();"><i class="fa-solid fa-print"></i>drucken</a>
+                        </div>
+
+                        <div class="event-detail-row">
+                            <div class="event-detail-value event-description">
+                                <f:format.html>{event.description}</f:format.html>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+
+                        <f:if condition="{event.program}">
+                            <div class="event-detail-row">
+                                <div class="event-detail-label">
+                                    <f:translate key="tx_sfeventmgt_domain_model_event.program" />
+                                </div>
+                                <div class="event-detail-value event-program">
+                                    <f:format.html>{event.program}</f:format.html>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </f:if>
+
+                        <f:if condition='{event.enableWaitlist}'>
+                            <div class="event-detail-row">
+                                <div class="event-detail-label">
+                                    <f:translate key="tx_sfeventmgt_domain_model_event.hasWaitlist" />
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </f:if>
+
+                        <div class="event-detail-row">
+                            <div class="event-detail-value event-price">
+                                <f:if condition="{event.currentPrice} == 0">
+                                    <f:then>
+                                        <f:translate key="event.freeofcharge" />
+                                    </f:then>
+                                    <f:else>
+                                        Kosten: <f:format.number decimals="2" decimalSeparator="," thousandsSeparator=".">{event.currentPrice}</f:format.number> {event.currency} inkl. USt.
+                                        <br><br>Sie erhalten kurz nach Ihrer Buchung eine Rechnung in der die Umsatzsteuer (19%) aufgeführt ist.<br>
+                                        Bitte begleichen Sie die Rechnung durch Überweisung bis spätestens 2 Wochen nach Erhalt.
+                                    </f:else>
+                                </f:if>
+                            </div>
+                            <div class="clear"></div><br />
+                        </div>
+
+                        <f:if condition="{event.link}">
+                            <div class="event-detail-row">
+                                <div class="event-detail-value event-link">
+                                    <f:link.typolink parameter="{event.link}"><f:translate key="tx_sfeventmgt_domain_model_event.link" /></f:link.typolink>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </f:if>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+
+
+        <f:comment>
+            The following getters are available to work with event images:
+
+            {event.image} = All images
+            {event.images} = All images
+            {event.listViewImages} = All images marked for list view
+            {event.firstListViewImage} = First image for list view (as file reference)
+            {event.detailViewImages} = All images marked for detail view
+            {event.firstDetailViewImage} = First image for detail view (as file reference)
+        </f:comment>
+
+
+        <f:if condition="{event.additionalImage}">
+            <div class="event-detail-row">
+                <div class="event-detail-label">
+                    <f:translate key="tx_sfeventmgt_domain_model_event.additional_image"/>
+                </div>
+                <div class="event-detail-value event-additional-image">
+                    <f:for each="{event.additionalImage}" as="image">
+                        <f:image src="{image.uid}" alt="" treatIdAsReference="TRUE" width="{settings.detail.imageWidth}" height="{settings.detail.imageHeight}"/>
+                    </f:for>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </f:if>
+
+        <f:if condition="{event.files}">
+            <div class="event-detail-row">
+                <div class="event-detail-label">
+                    <f:translate key="tx_sfeventmgt_domain_model_event.files" />
+                </div>
+                <div class="event-detail-value files">
+                    <f:for each="{event.files}" as="file">
+                        <f:if condition="{file.originalResource.title}">
+                            <f:then>
+                                <a href="{file.originalResource.publicUrl}" target="_blank">{file.originalResource.title}</a>
+                            </f:then>
+                            <f:else>
+                                <a href="{file.originalResource.publicUrl}" target="_blank"><f:translate key="detail.download"/></a>
+                            </f:else>
+                        </f:if>
+                    </f:for>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </f:if>
+
+        <div class="event-detail-row">
+            <div class="event-detail-value event-startdate">
+                <div class="event-detail-label">
+                    Mögliche Termine:
+                </div>
+                <f:if condition="{event.activeStartdates}">
+                    <f:then>
+                        <div class="startdates">
+                            <f:for each="{event.activeStartdates}" as="startdate" iteration="i">
+                                <span class="startdate-button<f:if condition='{i.index}==0'> active</f:if>" data-startdate="<f:format.date format='c'>{startdate.startdatetime}</f:format.date>"><f:format.date format="%d.%m.%Y, %H:%M">{startdate.startdatetime}</f:format.date> Uhr</span>
+                            </f:for>
+                            <f:asset.script identifier="sfeventmultidates" src="EXT:sf_event_mgt_multidates/Resources/Public/JavaScript/sfeventmgtmultidates.js" />
+                        </div>
+                    </f:then>
+                    <f:else><br>
+                        Derzeit sind keine Termine geplant.<br>
+                        Sie können die Schulung aber dennoch unverbindlich anfragen.<br>
+                        Bitte unter Bemerkung einen Terminwunsch angeben.<br>
+                        <f:variable name="bookingBtnText">Anfragen</f:variable>
+                    </f:else>
+                </f:if>
+            </div>
+            <div class="clear"></div>
+            <br />
+        </div>
+
+        <f:if condition="{event.related}">
+            <div class="event-detail-row">
+                <div class="event-detail-label">
+                    Weitere Schulungen
+                </div>
+                <ul class="event-detail-value event-related">
+                    <f:for each="{event.related}" as="relatedevent">
+                        <f:if condition="{settings.detailPid} == ''">
+                            <f:then>
+                                <li><f:link.action action="detail" arguments="{event : relatedevent}">{relatedevent.title}</f:link.action></li>
+                            </f:then>
+                            <f:else>
+                                <li><f:link.action action="detail" arguments="{event : relatedevent}" pageUid="{settings.detailPid}">{relatedevent.title}</f:link.action></li>
+                            </f:else>
+                        </f:if>
+                    </f:for>
+                </ul>
+                <div class="clear"></div>
+            </div>
+        </f:if>
+
+        <f:if condition="{event.speaker}">
+            <div class="event-detail-row">
+                <div class="event-detail-label">
+                    <f:translate key="tx_sfeventmgt_domain_model_event.speaker" />
+                </div>
+                <div class="event-detail-value event-speaker">
+                    <ul>
+                        <f:for each="{event.speaker}" as="speaker">
+                            <li>{speaker.name}</li>
+                        </f:for>
+                    </ul>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </f:if>
+
+        <f:if condition="{settings.registrationPid} !=''">
+            <f:link.action action="registration" arguments="{event : event}" pageUid="{settings.registrationPid}" class="button lightbox-btn">
+                {bookingBtnText}
+            </f:link.action>
+        </f:if>
+
+        <br /><br /><br />
+        <f:link.action action="list" pageUid="{settings.listPid}"><f:translate key="event.backtext" /></f:link.action>
+
+        <div class="popup register-form">
+            <f:cObject typoscriptObjectPath="lib.registerform" />
+        </div>
+    </f:if>
+</f:section>
+
+</html>

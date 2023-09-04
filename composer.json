@@ -1,0 +1,48 @@
+{
+    "name": "machwert/sf_event_mgt_multidates",
+    "type": "typo3-cms-extension",
+    "version": "0.0.1",
+    "description": "SF Event MGT Multidates",
+    "keywords": [
+		"TYPO3",
+		"extension",
+		"Machwert",
+		"machwert.de"
+	],
+    "authors": [
+        {
+            "name": "Volker Golbig",
+            "role": "Developer"
+        }
+    ],
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "typo3/cms-core": "^12",
+        "derhansen/sf_event_mgt": "7.2.0",
+        "ext-curl": "*"
+    },
+    "replace": {
+        "typo3-ter/sf_event_mgt_multidates": "self.version"
+    },
+    "autoload": {
+        "psr-4": {
+            "Machwert\\SfEventMgtMultidates\\": "Classes"
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "sf_event_mgt_multidates",
+            "cms-package-dir": "{$vendor-dir}/typo3/cms",
+            "app-dir": ".Build",
+            "web-dir": ".Build/public"
+        }
+    },
+    "config": {
+        "vendor-dir": ".Build/vendor",
+        "bin-dir": ".Build/bin",
+        "allow-plugins": {
+            "typo3/cms-composer-installers": true,
+            "typo3/class-alias-loader": true
+        }
+    }
+}
