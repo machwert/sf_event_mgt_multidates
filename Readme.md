@@ -40,7 +40,7 @@ Events are dislayed multiple times if multiple dates are set in calendar view
 Registrations you find in TYPO3 Backend for each event in tab 'members (DE: Teilnehmer)'.
 Here you find the chosen startdate of the registered user
 
-![alt text](https://github.com/machwert/sf_event_mgt_multidates/blob/main/Documentation/TYPO3Backend_EventRegistrationview?raw=true)
+![alt text](https://github.com/machwert/sf_event_mgt_multidates/blob/main/Documentation/TYPO3Backend_EventRegistrationview.png?raw=true)
 
 ## Email New Registration view
 In emails to user and admin the chosen date is shown
