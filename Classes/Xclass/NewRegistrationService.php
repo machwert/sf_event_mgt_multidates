@@ -16,7 +16,7 @@ use DERHANSEN\SfEventMgt\Domain\Model\Event;
 use DERHANSEN\SfEventMgt\Domain\Model\Registration;
 use DERHANSEN\SfEventMgt\Utility\RegistrationResult;
 
-class RegistrationService extends \DERHANSEN\SfEventMgt\Service\RegistrationService
+class NewRegistrationService extends \DERHANSEN\SfEventMgt\Service\RegistrationService
 {
     /**
      * Checks, if the registration can successfully be created. Note, that
@@ -24,13 +24,11 @@ class RegistrationService extends \DERHANSEN\SfEventMgt\Service\RegistrationServ
      */
     public function checkRegistrationSuccess(Event $event, Registration $registration, int $result): array
     {
+
         $success = true;
         if ($event->getEnableRegistration() === false) {
             $success = false;
             $result = RegistrationResult::REGISTRATION_NOT_ENABLED;
-        } elseif ($event->getRegistrationDeadline() != null && $event->getRegistrationDeadline() < new DateTime()) {
-            $success = false;
-            $result = RegistrationResult::REGISTRATION_FAILED_DEADLINE_EXPIRED;
         } elseif ($event->getRegistrations()->count() >= $event->getMaxParticipants()
             && $event->getMaxParticipants() > 0 && !$event->getEnableWaitlist()
         ) {

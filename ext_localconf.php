@@ -16,7 +16,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\DERHANSEN\SfEventMgt\Controller\E
 ];
 
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\DERHANSEN\SfEventMgt\Service\RegistrationService::class] = [
-    'className' => \Machwert\SfEventMgtMultidates\Xclass\RegistrationService::class
+    'className' => \Machwert\SfEventMgtMultidates\Xclass\NewRegistrationService::class
 ];
 
 /*

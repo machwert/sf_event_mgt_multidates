@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Extension "sf_event_mgt" for TYPO3 CMS.
+ * This file is part of the Extension "sf_event_mgt_multidates" for TYPO3 CMS which extends "sf_event_mgt".
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
@@ -15,15 +15,32 @@ use DateTime;
 use DERHANSEN\SfEventMgt\Domain\Model\Dto\CategoryDemand;
 use DERHANSEN\SfEventMgt\Domain\Model\Dto\EventDemand;
 use DERHANSEN\SfEventMgt\Domain\Model\Dto\ForeignRecordDemand;
-use DERHANSEN\SfEventMgt\Domain\Model\Event;
-use DERHANSEN\SfEventMgt\Domain\Model\Registration;
 use DERHANSEN\SfEventMgt\Event\ModifyCalendarViewVariablesEvent;
+use DERHANSEN\SfEventMgt\Utility\RegistrationResult;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 class NewEventController extends \DERHANSEN\SfEventMgt\Controller\EventController
 {
+
+    /**
+     * Initializes the current action
+     */
+    public function initializeAction(): void
+    {
+        $getVars = $this->request->getParsedBody()['tx_sfeventmgt_pieventdetail'] ?? $this->request->getQueryParams()['tx_sfeventmgt_pieventdetail'] ?? null;
+        if(!isset($getVars['event'])) {
+            $getVars = $this->request->getParsedBody()['tx_sfeventmgt_pieventregistration'] ?? $this->request->getQueryParams()['tx_sfeventmgt_pieventregistration'] ?? null;
+        }
+        if(isset($getVars['event'])) {
+            $eventId = (int) $getVars['event'];
+            if ($eventId > 0) {
+                $this->settings['singleEvent'] = $eventId;
+                $this->settings['disableOverrideDemand'] = 0;
+            }
+        }
+        parent::initializeAction();
+    }
+
     /**
      * Calendar view
      */
@@ -120,69 +137,5 @@ class NewEventController extends \DERHANSEN\SfEventMgt\Controller\EventControlle
 
         $this->view->assignMultiple($variables);
         return $this->htmlResponse();
-    }
-
-
-    public function registrationAction(?Event $event = null): ResponseInterface
-    {
-        $getVars = GeneralUtility::_GET('tx_sfeventmgt_pieventdetail');
-        if(!isset($getVars['event'])) {
-            $getVars = GeneralUtility::_GET('tx_sfeventmgt_pieventregistration');
-        }
-        if(isset($getVars['event'])) {
-            $eventId = (int)$getVars['event'];
-            if ($eventId > 0) {
-                $this->settings['singleEvent'] = $eventId;
-            }
-        }
-
-        return parent::registrationAction($event);
-    }
-
-    /**
-     * Shows the result of the saveRegistrationAction
-     */
-    public function saveRegistrationResultAction(int $result, int $eventuid, string $hmac): ResponseInterface
-    {
-        $getVars = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('tx_sfeventmgt_pieventregistration');
-        if(isset($getVars['event'])) {
-            $eventId = (int) $getVars['event'];
-            if($eventId > 0) {
-                $this->settings['singleEvent'] = $eventId;
-            }
-        }
-        return parent::saveRegistrationResultAction($result, $eventuid, $hmac);
-    }
-
-    public function initializeSaveRegistrationAction(): void
-    {
-        $getVars = GeneralUtility::_GET('tx_sfeventmgt_pieventregistration');
-        if (isset($getVars['event'])) {
-            $eventId = (int)$getVars['event'];
-            if ($eventId > 0) {
-                $this->settings['singleEvent'] = $eventId;
-                $this->settings['disableOverrideDemand'] = 0;
-            }
-        }
-        parent::initializeSaveRegistrationAction();
-    }
-
-    /**
-     * Saves the registration
-     *
-     * @Extbase\Validate("DERHANSEN\SfEventMgt\Validation\Validator\RegistrationFieldValidator", param="registration")
-     * @Extbase\Validate("DERHANSEN\SfEventMgt\Validation\Validator\RegistrationValidator", param="registration")
-     */
-    public function saveRegistrationAction(Registration $registration, Event $event): ResponseInterface
-    {
-        $getVars = GeneralUtility::_GET('tx_sfeventmgt_pieventregistration');
-        if (isset($getVars['event'])) {
-            $eventId = (int)$getVars['event'];
-
-            if ($eventId > 0) {
-                $this->settings['singleEvent'] = $eventId;
-            }
-        }
-        return parent::saveRegistrationAction($registration, $event);
     }
 }
