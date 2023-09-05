@@ -44,6 +44,7 @@ Here you find the chosen startdate of the registered user
 
 ## Email New Registration view
 In emails to user and admin the chosen date is shown
+Attention: For Html-emails as shown there are more adaptions necessary. Possibly I will offer an extension sf_event_mgt_htmlmails shortly
 
 ![alt text](https://github.com/machwert/sf_event_mgt_multidates/blob/main/Documentation/Email_NewRegistration.png?raw=true)
 
