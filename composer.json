@@ -17,7 +17,8 @@
     ],
     "license": "GPL-2.0-or-later",
     "require": {
-        "typo3/cms-core": "^12",
+        "php" : "^8.0",
+        "typo3/cms-core": "^12.4",
         "derhansen/sf_event_mgt": "7.2.0",
         "ext-curl": "*"
     },
