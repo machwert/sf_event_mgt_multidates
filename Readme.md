@@ -1,5 +1,9 @@
 # sf_event_mgt_multidates TYPO3 Extension extends sf_event_mgt
 
+Enables multiple dates for sf_event_mgt events
+- Adapted calender view
+- Can be configured to send FluidEmails
+- Can be configured to show registration forms in detail view
 - Uses Xclasses (see ext_localconf.php) to extend sf_event_mgt_multidates
 - jQuery must be implemented, otherwise registration with multidates does not work
 - Attention: For new registrations 'deadline expired' and 'event expired' checks are removed (sf_event_mgt/Classes/Service/RegistrationService.php::checkRegistrationSuccess is Xclassed)

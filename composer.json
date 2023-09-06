@@ -1,7 +1,7 @@
 {
     "name": "machwert/sf_event_mgt_multidates",
     "type": "typo3-cms-extension",
-    "version": "0.0.2",
+    "version": "0.0.4",
     "description": "SF Event MGT Multidates",
     "keywords": [
 		"TYPO3",

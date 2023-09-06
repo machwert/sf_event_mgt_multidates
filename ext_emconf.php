@@ -2,13 +2,13 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'sf_event_mgt multidates',
-    'description' => 'Multidates for sf_event_mgt',
+    'description' => 'Enables multiple dates for sf_event_mgt events. Calender view of sf_event_mgt is adapted to display those events.',
     'category' => 'be',
     'author' => 'Volker Golbig',
     'author_email' => 'v.golbig@machwert.de',
-    'state' => 'stable',
+    'state' => 'beta',
     'clearCacheOnLoad' => 1,
-    'version' => '0.0.2',
+    'version' => '0.0.4',
     'constraints' => [
         'depends' => [
             'typo3' => '12.4.0-12.4.99',
