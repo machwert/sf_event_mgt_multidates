@@ -246,9 +246,11 @@
         <br /><br /><br />
         <f:link.action action="list" pageUid="{settings.listPid}"><f:translate key="event.backtext" /></f:link.action>
 
-        <div class="popup register-form">
-            <f:cObject typoscriptObjectPath="lib.registerform" />
-        </div>
+        <f:if condition="{settings.registrationPluginInDetailView}">
+            <div class="popup register-form">
+                <f:cObject typoscriptObjectPath="lib.registerform" />
+            </div>
+        </f:if>
     </f:if>
 </f:section>
 

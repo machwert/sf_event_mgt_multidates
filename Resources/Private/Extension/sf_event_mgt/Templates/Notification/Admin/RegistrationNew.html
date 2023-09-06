@@ -8,7 +8,7 @@
         <p>{f:format.date(date: registration.startdatetime, format: '%d.%m.%Y - %H:%M')} Uhr</p>
     </f:then>
     <f:else>
-        <p>Neue Anfrage für die Schulung:<br>
+        <p>Neue Registrierung für die Schulung:<br>
             <b>{event.title}</b>
         </p>
     </f:else>
@@ -31,6 +31,6 @@
 
 <f:render partial="Notification/RegistrationFields" arguments="{registration: registration}"/>
 
-<p>The registration is not finished yet, as the user needs to confirm his/her registration</p>
+<p>Hinweis: Die Anmeldung wurde noch nicht abgeschlossen.</p>
 
 </html>

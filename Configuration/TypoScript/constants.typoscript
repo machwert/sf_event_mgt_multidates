@@ -1,0 +1,8 @@
+# cat=plugin.tx_sfeventmgt_multidates/loadjQuery; type=boolean; label=Load jQuery 3.7.1 locally?
+plugin.tx_sfeventmgt_mulitdates.settings.loadjQuery = 0
+
+# cat=plugin.tx_sfeventmgt_multidates/useFluidEmail; type=boolean; label=Use FluidEmail to send mails?
+plugin.tx_sfeventmgt_mulitdates.settings.useFluidEmail = 0
+
+# cat=plugin.tx_sfeventmgt_multidates/registrationPluginContentId; type=int; label=Content ID of event registration plugin. If set, registration form is displayed in detail view directly.
+plugin.tx_sfeventmgt_mulitdates.settings.registrationPluginContentId = 0

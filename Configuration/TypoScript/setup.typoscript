@@ -2,4 +2,22 @@ plugin.tx_sfeventmgt.view.layoutRootPaths.2 = EXT:sf_event_mgt_multidates/Resour
 plugin.tx_sfeventmgt.view.templateRootPaths.2 = EXT:sf_event_mgt_multidates/Resources/Private/Extension/sf_event_mgt/Templates/
 plugin.tx_sfeventmgt.view.partialRootPaths.2 = EXT:sf_event_mgt_multidates/Resources/Private/Extension/sf_event_mgt/Partials/
 
-page.includeCSS.sf_event_mgt_multidates =  EXT:sf_event_mgt_multidates/Resources/Public/StyleSheet/sfeventmgtmultidates.css
+page.includeCSS.sf_event_mgt_multidates =  EXT:sf_event_mgt_multidates/Resources/Public/Css/sfeventmgtmultidates.css
+
+plugin.tx_sfeventmgt_mulitdates.settings.useFluidEmail = {$plugin.tx_sfeventmgt_mulitdates.settings.useFluidEmail}
+
+["{$plugin.tx_sfeventmgt_mulitdates.settings.loadjQuery}" == "1"]
+    page.includeJSFooterlibs {
+        jQuery = EXT:sf_event_mgt_multidates/Resources/Public/JavaScript/jquery-3.7.1.min.js
+    }
+[global]
+
+["{$plugin.tx_sfeventmgt_mulitdates.settings.registrationPluginContentId}" > 0]
+    plugin.tx_sfeventmgt.settings.registrationPluginInDetailView = {$plugin.tx_sfeventmgt_mulitdates.settings.registrationPluginInDetailView}
+    lib.registerform = RECORDS
+    lib.registerform {
+        source = {$plugin.tx_sfeventmgt_mulitdates.settings.registrationPluginContentId}
+        dontCheckPid = 1
+        tables = tt_content
+    }
+[global]

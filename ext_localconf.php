@@ -19,6 +19,13 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\DERHANSEN\SfEventMgt\Service\Regi
     'className' => \Machwert\SfEventMgtMultidates\Xclass\NewRegistrationService::class
 ];
 
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\DERHANSEN\SfEventMgt\Service\EmailService::class] = [
+    'className' => \Machwert\SfEventMgtMultidates\Xclass\NewEmailService::class
+];
+
+$GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'][200] = 'EXT:sf_event_mgt_multidates/Resources/Private/Templates/Email/';
+
+
 /*
  * for TYPO3 v10 and v11:
 \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\Container\Container::class)

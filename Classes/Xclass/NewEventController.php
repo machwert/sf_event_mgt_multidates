@@ -15,10 +15,12 @@ use DateTime;
 use DERHANSEN\SfEventMgt\Domain\Model\Dto\CategoryDemand;
 use DERHANSEN\SfEventMgt\Domain\Model\Dto\EventDemand;
 use DERHANSEN\SfEventMgt\Domain\Model\Dto\ForeignRecordDemand;
+use DERHANSEN\SfEventMgt\Domain\Model\Event;
+use DERHANSEN\SfEventMgt\Domain\Model\Registration;
 use DERHANSEN\SfEventMgt\Event\ModifyCalendarViewVariablesEvent;
 use DERHANSEN\SfEventMgt\Utility\RegistrationResult;
 use Psr\Http\Message\ResponseInterface;
-
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 class NewEventController extends \DERHANSEN\SfEventMgt\Controller\EventController
 {
 
@@ -27,10 +29,8 @@ class NewEventController extends \DERHANSEN\SfEventMgt\Controller\EventControlle
      */
     public function initializeAction(): void
     {
-        $getVars = $this->request->getParsedBody()['tx_sfeventmgt_pieventdetail'] ?? $this->request->getQueryParams()['tx_sfeventmgt_pieventdetail'] ?? null;
-        if(!isset($getVars['event'])) {
-            $getVars = $this->request->getParsedBody()['tx_sfeventmgt_pieventregistration'] ?? $this->request->getQueryParams()['tx_sfeventmgt_pieventregistration'] ?? null;
-        }
+        $getVars = $this->request->getQueryParams()['tx_sfeventmgt_pieventdetail'] ?? $this->request->getQueryParams()['tx_sfeventmgt_pieventregistration'] ?? null;
+
         if(isset($getVars['event'])) {
             $eventId = (int) $getVars['event'];
             if ($eventId > 0) {

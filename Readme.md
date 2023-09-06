@@ -7,9 +7,29 @@
 
 ## Installation
 
+1.
+Composer installation:
+composer req machwert/sf_event_mgt_multidates
+
+Standard installation:
+TYPO3 Backend / Admin Tools: Extensions / Get Extension: sf_event_mgt_multidates
+
+2.
 Include static TypoScript file 'SF Event Mgt Multidates'
 
 ![alt text](https://github.com/machwert/sf_event_mgt_multidates/blob/main/Documentation/TYPO3Backend_IncludeTypoScript.png?raw=true)
+
+## Configuration
+In Constant Editor you can configure following:
+
+1. Load jQuery 3.7.1 locally?
+plugin.tx_sfeventmgt_mulitdates.settings.loadjQuery = 1
+
+2. Use FluidEmail to send mails?
+plugin.tx_sfeventmgt_mulitdates.settings.useFluidEmail = 1
+
+3. Content ID of event registration plugin. If set, registration form is displayed in detail view directly.
+plugin.tx_sfeventmgt_mulitdates.settings.registrationPluginContentId = 123
 
 ## TYPO3 Backend sf_event_mgt::Event
 Add multiple dates for an event
