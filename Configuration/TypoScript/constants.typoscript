@@ -1,8 +1,11 @@
-# cat=plugin.tx_sfeventmgt_multidates/loadjQuery; type=boolean; label=Load jQuery 3.7.1 locally?
-plugin.tx_sfeventmgt_mulitdates.settings.loadjQuery = 0
-
 # cat=plugin.tx_sfeventmgt_multidates/useFluidEmail; type=boolean; label=Use FluidEmail to send mails?
 plugin.tx_sfeventmgt_mulitdates.settings.useFluidEmail = 0
 
-# cat=plugin.tx_sfeventmgt_multidates/registrationPluginContentId; type=int; label=Content ID of event registration plugin. If set, registration form is displayed in detail view directly.
-plugin.tx_sfeventmgt_mulitdates.settings.registrationPluginContentId = 0
+# cat=plugin.tx_sfeventmgt_multidates/showFormInLightbox; type=boolean; label=Show registration form on same page in lightbox?
+plugin.tx_sfeventmgt_mulitdates.settings.showFormInLightbox = 0
+
+# cat=plugin.tx_sfeventmgt_multidates/ajaxTypeNum; type=int; label=TypeNum of ajax page, which has no html header output.
+plugin.tx_sfeventmgt_mulitdates.settings.ajaxTypeNum = 99
+
+# cat=plugin.tx_sfeventmgt_multidates/ajaxColPos; type=int; label=For this ajax implementation the content of this colPos only is shown.
+plugin.tx_sfeventmgt_mulitdates.settings.ajaxColPos = 20

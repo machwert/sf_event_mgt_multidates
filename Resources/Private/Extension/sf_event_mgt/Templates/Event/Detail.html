@@ -5,6 +5,7 @@
 <f:layout name="Default" />
 
 <f:section name="main">
+    <f:asset.script identifier="sfeventmultidates" src="EXT:sf_event_mgt_multidates/Resources/Public/JavaScript/sfeventmgtmultidates_v1.js" />
     <f:variable name="bookingBtnText">Buchen</f:variable>
     <f:variable name="linktoevent">
         <f:uri.action action="detail" arguments="{event : event}" pageUid="{settings.detailPid}" absolute="1" />
@@ -185,7 +186,6 @@
                             <f:for each="{event.activeStartdates}" as="startdate" iteration="i">
                                 <span class="startdate-button<f:if condition='{i.index}==0'> active</f:if>" data-startdate="<f:format.date format='c'>{startdate.startdatetime}</f:format.date>"><f:format.date format="%d.%m.%Y, %H:%M">{startdate.startdatetime}</f:format.date> Uhr</span>
                             </f:for>
-                            <f:asset.script identifier="sfeventmultidates" src="EXT:sf_event_mgt_multidates/Resources/Public/JavaScript/sfeventmgtmultidates.js" />
                         </div>
                     </f:then>
                     <f:else><br>
@@ -238,18 +238,25 @@
         </f:if>
 
         <f:if condition="{settings.registrationPid} !=''">
-            <f:link.action action="registration" arguments="{event : event}" pageUid="{settings.registrationPid}" class="button lightbox-btn">
-                {bookingBtnText}
-            </f:link.action>
+            <f:if condition="{settings.showFormInLightbox}">
+                <f:then>
+                    <f:link.action action="registration" arguments="{event : event}" pageUid="{settings.registrationPid}" additionalParams="{type : 99}" class="button lightbox-btn" id="linktoform">
+                        {bookingBtnText}
+                    </f:link.action>
+                </f:then>
+                <f:else>
+                    <f:link.action action="registration" arguments="{event : event}" pageUid="{settings.registrationPid}" class="button">
+                        {bookingBtnText}
+                    </f:link.action>
+                </f:else>
+            </f:if>
         </f:if>
 
         <br /><br /><br />
         <f:link.action action="list" pageUid="{settings.listPid}"><f:translate key="event.backtext" /></f:link.action>
 
-        <f:if condition="{settings.registrationPluginInDetailView}">
-            <div class="popup register-form">
-                <f:cObject typoscriptObjectPath="lib.registerform" />
-            </div>
+        <f:if condition="{settings.showFormInLightbox}">
+            <div class="popup register-form" id="popup-registerform"></div>
         </f:if>
     </f:if>
 </f:section>

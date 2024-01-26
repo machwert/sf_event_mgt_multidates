@@ -6,3 +6,4 @@ services:
 
   Machwert\SfEventMgtMultidates\:
     resource: '../Classes/*'
+    exclude: '../Classes/Domain/Model/*'

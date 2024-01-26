@@ -5,9 +5,8 @@ Enables multiple dates for sf_event_mgt events
 - Can be configured to send FluidEmails
 - Can be configured to show registration forms in detail view
 - Uses Xclasses (see ext_localconf.php) to extend sf_event_mgt_multidates
-- jQuery must be implemented, otherwise registration with multidates does not work
 - Attention: For new registrations 'deadline expired' and 'event expired' checks are removed (sf_event_mgt/Classes/Service/RegistrationService.php::checkRegistrationSuccess is Xclassed)
-- Most probably need to adjust the shipped fluid templates in sf_event_mgt_multidates/Resources/Private/Extension/sf_event_mgt/.. to your need
+- Most probably you need to adjust the shipped fluid templates in sf_event_mgt_multidates/Resources/Private/Extension/sf_event_mgt/.. to your need
 
 ## Installation
 
@@ -26,14 +25,21 @@ Include static TypoScript file 'SF Event Mgt Multidates'
 ## Configuration
 In Constant Editor you can configure following:
 
-1. Load jQuery 3.7.1 locally?
-plugin.tx_sfeventmgt_mulitdates.settings.loadjQuery = 1
-
-2. Use FluidEmail to send mails?
+1. Use FluidEmail to send mails?
 plugin.tx_sfeventmgt_mulitdates.settings.useFluidEmail = 1
 
-3. Content ID of event registration plugin. If set, registration form is displayed in detail view directly.
-plugin.tx_sfeventmgt_mulitdates.settings.registrationPluginContentId = 123
+2. Show registration form on same page in lightbox?
+   plugin.tx_sfeventmgt_mulitdates.settings.showFormInLightbox = 1
+
+If you select this (default) the registration form is loaded by ajax in the detail view directly.
+The lightbox itself is not implemented in this extension, but it produces a link button
+with css class "lightbox-btn" which you can use.
+
+3. TypeNum of ajax page, which has no html header output.
+   plugin.tx_sfeventmgt_mulitdates.settings.ajaxTypeNum = 99
+
+4. For this ajax implementation the content of this colPos only is shown.
+   plugin.tx_sfeventmgt_mulitdates.settings.ajaxColPos = 20
 
 ## TYPO3 Backend sf_event_mgt::Event
 Add multiple dates for an event
@@ -73,5 +79,6 @@ Attention: For Html-emails as shown there are more adaptions necessary. Possibly
 ![alt text](https://github.com/machwert/sf_event_mgt_multidates/blob/main/Documentation/Email_NewRegistration.png?raw=true)
 
 ## ChangeLog
+v0.0.3 - Registration form is now called by Ajax, so event detail page can be cached. Furthermore I changed jQuery implementations to native JavaScript.
 v0.0.2 - Moved setting to initializeAction, only calenderAction must be checked now if sf_event_mgt is updated
 

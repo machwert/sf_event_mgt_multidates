@@ -6,18 +6,35 @@ page.includeCSS.sf_event_mgt_multidates =  EXT:sf_event_mgt_multidates/Resources
 
 plugin.tx_sfeventmgt_mulitdates.settings.useFluidEmail = {$plugin.tx_sfeventmgt_mulitdates.settings.useFluidEmail}
 
-["{$plugin.tx_sfeventmgt_mulitdates.settings.loadjQuery}" == "1"]
-    page.includeJSFooterlibs {
-        jQuery = EXT:sf_event_mgt_multidates/Resources/Public/JavaScript/jquery-3.7.1.min.js
+plugin.tx_sfeventmgt.settings.showFormInLightbox = {$plugin.tx_sfeventmgt_mulitdates.settings.showFormInLightbox}
+
+mystyles.content.get = CONTENT
+mystyles.content.get {
+    table = tt_content
+    select {
+        orderBy = sorting
+        where = colPos = 0
     }
+}
+
+["{$plugin.tx_sfeventmgt_mulitdates.settings.showFormInLightbox}" == "1"]
+ajax = PAGE
+ajax {
+    typeNum = {$plugin.tx_sfeventmgt_mulitdates.settings.ajaxTypeNum}
+    10 < mystyles.content.get
+    10.select.where = colPos = {$plugin.tx_sfeventmgt_mulitdates.settings.ajaxColPos}
+    config {
+        disableAllHeaderCode = 1
+        additionalHeaders = Content-type:application/json
+        xhtml_cleaning = 0
+        admPanel = 0
+        debug = 0
+    }
+}
 [global]
 
-["{$plugin.tx_sfeventmgt_mulitdates.settings.registrationPluginContentId}" > 0]
-    plugin.tx_sfeventmgt.settings.registrationPluginInDetailView = {$plugin.tx_sfeventmgt_mulitdates.settings.registrationPluginInDetailView}
-    lib.registerform = RECORDS
-    lib.registerform {
-        source = {$plugin.tx_sfeventmgt_mulitdates.settings.registrationPluginContentId}
-        dontCheckPid = 1
-        tables = tt_content
-    }
-[global]
+lib.pageTypeNum = TEXT
+lib.pageTypeNum.data = GP : type
+#lib.pageTypeNum.intval = 1
+#plugin.tx_sfeventmgt.settings.pageTypeNum < lib.pageTypeNum
+plugin.tx_sfeventmgt.settings.pageTypeNum = 0
