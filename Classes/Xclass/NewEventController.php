@@ -31,7 +31,7 @@ class NewEventController extends \DERHANSEN\SfEventMgt\Controller\EventControlle
     {
         $getVars = $this->request->getQueryParams()['tx_sfeventmgt_pieventdetail'] ?? $this->request->getQueryParams()['tx_sfeventmgt_pieventregistration'] ?? null;
 
-        if(isset($getVars['event'])) {
+        if (isset($getVars['event'])) {
             $eventId = (int) $getVars['event'];
             if ($eventId > 0) {
                 $this->settings['singleEvent'] = $eventId;
@@ -93,11 +93,11 @@ class NewEventController extends \DERHANSEN\SfEventMgt\Controller\EventControlle
 
         $eventCount = $events->count();
         $i = $eventCount;
-        for($j = 0; $j < $eventCount; $j++) {
+        for ($j = 0; $j < $eventCount; $j++) {
             $startDates = $events[$j]->getStartdates();
             $eventDuration = $events[$j]->getEventduration();
-            if(!empty($startDates)) {
-                foreach($startDates as $key2 => $startDate) {
+            if (!empty($startDates)) {
+                foreach ($startDates as $key2 => $startDate) {
                     $events[$i] = clone $events[$j];
                     $events[$i]->setStartDate($startDate->getStartdatetime());
                     $endTimeStamp = $startDate->getStartdatetime()->getTimestamp();
