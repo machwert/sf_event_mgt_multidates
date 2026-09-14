@@ -169,6 +169,19 @@ The same tests run on both maintained lines - the signature of
 
 ## ChangeLog
 
+**2.0.2** - Three fixes found by comparing the XCLASSed methods against the current original.
+None of them re-introduced a published security advisory - both known advisories for
+sf_event_mgt concern the backend module, which this extension does not touch.
+- `sendEmailMessage()` now rejects an empty subject and validates `replyTo` with
+  `GeneralUtility::validEmail()`, as the original does. `replyTo` can carry user input when
+  `notification.registrationDataAsSenderForAdminEmails` is enabled.
+- `calendarAction()` registers the page cache tags again, so the calendar page is flushed
+  when an event changes.
+- `calendarAction()` now updates month **and** year when a week number is given, and uses
+  the ISO year `date('o')` - calendar week 1 partly falls into December.
+- `initializeAction()` no longer sets `disableOverrideDemand = 0`; it had no effect for the
+  detail and registration actions and leaked into other plugins on the same page.
+
 **2.0.1** - Packaging fix, no functional change.
 - added `.gitattributes` marking `ext_emconf.php` as `export-ignore`. The file stays in the
   repository for TER and `typo3/tailor`, but is no longer part of the Composer package -

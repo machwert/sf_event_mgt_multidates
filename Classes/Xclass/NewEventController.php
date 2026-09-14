@@ -35,7 +35,6 @@ class NewEventController extends \DERHANSEN\SfEventMgt\Controller\EventControlle
             $eventId = (int) $getVars['event'];
             if ($eventId > 0) {
                 $this->settings['singleEvent'] = $eventId;
-                $this->settings['disableOverrideDemand'] = 0;
             }
         }
         parent::initializeAction();
@@ -72,10 +71,15 @@ class NewEventController extends \DERHANSEN\SfEventMgt\Controller\EventControlle
         // If a weeknumber is given in overwriteDemand['week'], we overwrite the current month
         if ($overwriteDemand['week'] ?? false) {
             $firstDayOfWeek = (new DateTime())->setISODate($currentYear, (int)$overwriteDemand['week']);
-            $currentMonth = (int)$firstDayOfWeek->format('m');
+            // Kalenderwoche 1 liegt teils im Dezember - Monat UND Jahr nachziehen,
+            // sonst rechnet der Kalender zum Jahreswechsel mit dem falschen Jahr.
+            $currentMonth = (int)$firstDayOfWeek->format('n');
+            $currentYear = (int)$firstDayOfWeek->format('Y');
             $eventDemand->setMonth($currentMonth);
+            $eventDemand->setYear($currentYear);
         } else {
-            $firstDayOfWeek = (new DateTime())->setISODate($currentYear, (int)date('W'));
+            // date('o') ist das ISO-Jahr und gehoert zu date('W').
+            $firstDayOfWeek = (new DateTime())->setISODate((int)date('o'), (int)date('W'));
         }
 
         // Set demand from calendar date range instead of month / year
@@ -146,6 +150,12 @@ class NewEventController extends \DERHANSEN\SfEventMgt\Controller\EventControlle
         $variables = $modifyCalendarViewVariablesEvent->getVariables();
 
         $this->view->assignMultiple($variables);
+
+        // Ohne diese Tags wird die Kalenderseite beim Bearbeiten einer
+        // Veranstaltung nicht verworfen und zeigt weiter den alten Stand.
+        $cacheDataCollector = $this->request->getAttribute('frontend.cache.collector');
+        $this->eventCacheService->addPageCacheTagsByEventDemandObject($cacheDataCollector, $eventDemand);
+
         return $this->htmlResponse();
     }
 }
