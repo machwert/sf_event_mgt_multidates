@@ -32,6 +32,10 @@ Composer installation:
 Standard installation:
 TYPO3 Backend / Admin Tools: Extensions / Get Extension: sf_event_mgt_multidates
 
+Note on `ext_emconf.php`: the file lives in the repository, because TER and `typo3/tailor`
+need it, but it is marked `export-ignore` in `.gitattributes` and therefore absent from the
+Composer package.
+
 2.
 Include static TypoScript file 'SF Event Mgt Multidates'
 
@@ -164,6 +168,12 @@ The same tests run on both maintained lines - the signature of
 `checkRegistrationSuccess()` is identical in sf_event_mgt 8.6 and 9.0.
 
 ## ChangeLog
+
+**2.0.1** - Packaging fix, no functional change.
+- added `.gitattributes` marking `ext_emconf.php` as `export-ignore`. The file stays in the
+  repository for TER and `typo3/tailor`, but is no longer part of the Composer package -
+  the same approach `sf_event_mgt` uses.
+- `version` in `ext_emconf.php` raised to 2.0.1
 
 **2.0.0** - Support for TYPO3 13.4 with sf_event_mgt ^8.6 and PHP ^8.2.
 - `NewEmailService` added as an XCLASS on `EmailService`

@@ -1,0 +1,7 @@
+* text=auto
+
+# Aus dem Composer-Paket heraushalten: ext_emconf.php wird nur von TER und
+# Tailor gebraucht. Liegt sie im vendor/, meldet TYPO3 ab 14.3 bei jedem Lauf
+# eine Deprecation. Im Repository bleibt sie erhalten.
+/.gitattributes export-ignore
+/ext_emconf.php export-ignore
