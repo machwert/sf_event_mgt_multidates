@@ -1,14 +1,13 @@
 {
     "name": "machwert/sf_event_mgt_multidates",
     "type": "typo3-cms-extension",
-    "version": "0.0.6",
     "description": "SF Event MGT Multidates",
     "keywords": [
-		"TYPO3",
-		"extension",
-		"Machwert",
-		"machwert.de"
-	],
+        "TYPO3",
+        "extension",
+        "Machwert",
+        "machwert.de"
+    ],
     "authors": [
         {
             "name": "Volker Golbig",
@@ -17,9 +16,9 @@
     ],
     "license": "GPL-2.0-or-later",
     "require": {
-        "php" : "^8.1",
-        "typo3/cms-core": "^12.4",
-        "derhansen/sf_event_mgt": "^7.3",
+        "php": "^8.2",
+        "typo3/cms-core": "^13.4",
+        "derhansen/sf_event_mgt": "^8.6",
         "ext-curl": "*"
     },
     "replace": {
@@ -28,6 +27,11 @@
     "autoload": {
         "psr-4": {
             "Machwert\\SfEventMgtMultidates\\": "Classes"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Machwert\\SfEventMgtMultidates\\Tests\\": "Tests"
         }
     },
     "extra": {

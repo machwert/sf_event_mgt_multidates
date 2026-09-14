@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Machwert\SfEventMgtMultidates\Xclass;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\Mailer;
@@ -25,7 +26,7 @@ class NewEmailService extends \DERHANSEN\SfEventMgt\Service\EmailService
      * @param string $subject The subject
      * @param string $body E-Mail body
      * @param string|null $name Optional sendername
-     * @param array $attachments Array of files (e.g. ['/absolute/path/doc.pdf'])
+     * @param array<string> $attachments Array of files (e.g. ['/absolute/path/doc.pdf'])
      * @param string|null $replyTo The reply-to mail
      *
      * @return bool true/false if message is sent
@@ -42,7 +43,8 @@ class NewEmailService extends \DERHANSEN\SfEventMgt\Service\EmailService
 
         $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::class);
         $typoscript = $configurationManager->getConfiguration(
-            \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+            \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
+        );
         $useFluidEmail = (bool) $typoscript['plugin.']['tx_sfeventmgt_mulitdates.']['settings.']['useFluidEmail'];
 
         if(!$useFluidEmail) {

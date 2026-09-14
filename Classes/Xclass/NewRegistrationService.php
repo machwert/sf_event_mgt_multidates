@@ -11,25 +11,31 @@ declare(strict_types=1);
 
 namespace Machwert\SfEventMgtMultidates\Xclass;
 
-use DateTime;
 use DERHANSEN\SfEventMgt\Domain\Model\Event;
 use DERHANSEN\SfEventMgt\Domain\Model\Registration;
+use DERHANSEN\SfEventMgt\Event\ModifyCheckRegistrationSuccessEvent;
 use DERHANSEN\SfEventMgt\Utility\RegistrationResult;
 
 class NewRegistrationService extends \DERHANSEN\SfEventMgt\Service\RegistrationService
 {
     /**
-     * Checks, if the registration can successfully be created. Note, that
-     * $result is passed by reference!
+     * Checks, if the registration can successfully be created.
+     *
+     * Anders als die Originalmethode prueft diese Variante weder
+     * registrationDeadline noch start-/enddate, damit die Anmeldung bei
+     * Veranstaltungen mit mehreren Terminen nicht am ersten Termin scheitert.
+     *
+     * @return array{0: bool, 1: int}
      */
-    public function checkRegistrationSuccess(Event $event, Registration $registration, int $result): array
+    public function checkRegistrationSuccess(Event $event, Registration $registration): array
     {
-
+        $result = RegistrationResult::REGISTRATION_SUCCESSFUL;
         $success = true;
+        $registrations = $event->getRegistrations();
         if ($event->getEnableRegistration() === false) {
             $success = false;
             $result = RegistrationResult::REGISTRATION_NOT_ENABLED;
-        } elseif ($event->getRegistrations()->count() >= $event->getMaxParticipants()
+        } elseif ($registrations !== null && $registrations->count() >= $event->getMaxParticipants()
             && $event->getMaxParticipants() > 0 && !$event->getEnableWaitlist()
         ) {
             $success = false;
@@ -47,12 +53,19 @@ class NewRegistrationService extends \DERHANSEN\SfEventMgt\Service\RegistrationS
         ) {
             $success = false;
             $result = RegistrationResult::REGISTRATION_FAILED_EMAIL_NOT_UNIQUE;
-        } elseif ($event->getRegistrations()->count() >= $event->getMaxParticipants()
+        } elseif ($registrations !== null && $registrations->count() >= $event->getMaxParticipants()
             && $event->getMaxParticipants() > 0 && $event->getEnableWaitlist()
         ) {
             $result = RegistrationResult::REGISTRATION_SUCCESSFUL_WAITLIST;
         }
 
-        return [$success, $result];
+        $modifyCheckRegistrationSuccessEvent = new ModifyCheckRegistrationSuccessEvent(
+            $success,
+            $result,
+            $registration
+        );
+        $this->eventDispatcher->dispatch($modifyCheckRegistrationSuccessEvent);
+
+        return [$modifyCheckRegistrationSuccessEvent->getSuccess(), $modifyCheckRegistrationSuccessEvent->getResult()];
     }
 }
