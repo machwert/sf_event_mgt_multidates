@@ -170,6 +170,23 @@ The same tests run on both maintained lines - the signature of
 
 ## ChangeLog
 
+**3.0.2** - Three fixes found by comparing the XCLASSed methods against the current original.
+None of them re-introduced a published security advisory - both known advisories for
+sf_event_mgt concern the backend module, which this extension does not touch.
+- `sendEmailMessage()` now rejects an empty subject and validates `replyTo` with
+  `GeneralUtility::validEmail()`, as the original does. `replyTo` can carry user input when
+  `notification.registrationDataAsSenderForAdminEmails` is enabled.
+- `calendarAction()` registers the page cache tags again
+  (`addPageCacheTagsByEventDemandObject`). Without them the calendar page was not flushed
+  when an event changed and kept showing stale data.
+- `calendarAction()` now updates month **and** year when a week number is given, and uses
+  the ISO year `date('o')` together with `date('W')`. Calendar week 1 partly falls into
+  December, so the previous code used the wrong year around new year.
+- `initializeAction()` no longer sets `disableOverrideDemand = 0`. It had no effect for the
+  detail and registration actions - `isOverwriteDemand()` is only consulted in list, calendar
+  and search - but it leaked into a list or calendar plugin on the same page whenever a
+  detail parameter was present in the URL.
+
 **3.0.1** - Packaging fix, no functional change.
 - `ext_emconf.php` is back, with constraints matching this line (TYPO3 14.3, PHP ^8.3,
   sf_event_mgt ^9.0). It had been dropped in 3.0.0 because TYPO3 14.3 deprecates it - but

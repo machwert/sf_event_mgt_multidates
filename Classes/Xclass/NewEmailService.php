@@ -61,7 +61,12 @@ class NewEmailService extends \DERHANSEN\SfEventMgt\Service\EmailService
                 $replyTo
             );
         } else {
-            if (!GeneralUtility::validEmail($sender) || !GeneralUtility::validEmail($recipient)) {
+            // Gleiche Eingangspruefung wie im Original: leerer Betreff und
+            // ungueltige Adressen fuehren zum Abbruch.
+            if ($subject === ''
+                || !GeneralUtility::validEmail($sender)
+                || !GeneralUtility::validEmail($recipient)
+            ) {
                 return false;
             }
 
@@ -74,7 +79,11 @@ class NewEmailService extends \DERHANSEN\SfEventMgt\Service\EmailService
                 ->assign('headline', $subject)
                 ->assign('content', $body);
 
-            if ($replyTo !== null && $replyTo !== '') {
+            // replyTo kann Nutzereingabe sein, wenn
+            // notification.registrationDataAsSenderForAdminEmails aktiv ist -
+            // dann steht dort die im Anmeldeformular eingegebene Adresse.
+            // Das Original prueft sie, diese Fassung tat es nicht.
+            if ($replyTo !== null && $replyTo !== '' && GeneralUtility::validEmail($replyTo)) {
                 $email->replyTo($replyTo);
             }
             foreach ($attachments as $attachment) {
