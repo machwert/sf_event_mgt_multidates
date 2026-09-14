@@ -47,7 +47,7 @@ class NewEmailService extends \DERHANSEN\SfEventMgt\Service\EmailService
         );
         $useFluidEmail = (bool) $typoscript['plugin.']['tx_sfeventmgt_mulitdates.']['settings.']['useFluidEmail'];
 
-        if(!$useFluidEmail) {
+        if (!$useFluidEmail) {
             return parent::sendEmailMessage(
                 $sender,
                 $recipient,
