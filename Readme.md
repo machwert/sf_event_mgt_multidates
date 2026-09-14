@@ -29,9 +29,13 @@ Composer installation:
 
     composer req machwert/sf_event_mgt_multidates:^3.0
 
-The 3.x line is Composer-only. It no longer ships an `ext_emconf.php`, which is deprecated
-since TYPO3 14.3, so installing from a ZIP file or from TER is not supported here.
-If you need a classic, non-Composer installation, use the 2.x line (TYPO3 13.4).
+Standard installation:
+TYPO3 Backend / Admin Tools: Extensions / Get Extension: sf_event_mgt_multidates
+
+Note on `ext_emconf.php`: the file lives in the repository, because TER and `typo3/tailor`
+need it, but it is marked `export-ignore` in `.gitattributes` and therefore absent from the
+Composer package. That keeps TYPO3 14.3 from emitting the deprecation notice it raises for
+every extension that ships one.
 
 2.
 Include static TypoScript file 'SF Event Mgt Multidates'
@@ -166,6 +170,13 @@ The same tests run on both maintained lines - the signature of
 
 ## ChangeLog
 
+**3.0.1** - Packaging fix, no functional change.
+- `ext_emconf.php` is back, with constraints matching this line (TYPO3 14.3, PHP ^8.3,
+  sf_event_mgt ^9.0). It had been dropped in 3.0.0 because TYPO3 14.3 deprecates it - but
+  TER and `typo3/tailor` still require it.
+- added `.gitattributes` marking it `export-ignore`, so it stays out of the Composer package
+  and the deprecation notice does not appear at runtime. Same approach as `sf_event_mgt`.
+
 **3.0.0** - Support for TYPO3 14.3 with sf_event_mgt ^9.0 and PHP ^8.3.
 - Fluid templates renamed to `*.fluid.html` as required by TYPO3 14
 - `NewEventController` reads the page information from the request attribute instead of
@@ -174,7 +185,7 @@ The same tests run on both maintained lines - the signature of
 - adapted to the sf_event_mgt 8.x/9.x API: changed method signatures, the
   `ModifyCheckRegistrationSuccessEvent` and the dropped `$result` parameter
 - functional tests added, see [Tests](#tests)
-- `ext_emconf.php` removed - deprecated since TYPO3 14.3, this line is Composer-only
+- `ext_emconf.php` removed - reverted in 3.0.1, see above
 - fixed version field dropped from `composer.json`; releases are identified by their git tag
 - code style aligned with PSR-12
 
