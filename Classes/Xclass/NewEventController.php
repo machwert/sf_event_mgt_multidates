@@ -21,9 +21,9 @@ use DERHANSEN\SfEventMgt\Event\ModifyCalendarViewVariablesEvent;
 use DERHANSEN\SfEventMgt\Utility\RegistrationResult;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
+
 class NewEventController extends \DERHANSEN\SfEventMgt\Controller\EventController
 {
-
     /**
      * Initializes the current action
      */
@@ -43,6 +43,8 @@ class NewEventController extends \DERHANSEN\SfEventMgt\Controller\EventControlle
 
     /**
      * Calendar view
+     *
+     * @param array<string, mixed> $overwriteDemand
      */
     public function calendarAction(array $overwriteDemand = []): ResponseInterface
     {
@@ -83,7 +85,10 @@ class NewEventController extends \DERHANSEN\SfEventMgt\Controller\EventControlle
 
         $firstEventsFromTimestamp = strtotime("1 August 2023");
         $firstEventsFromDatetime = (new DateTime())->setTimestamp($firstEventsFromTimestamp);
-        $eventDemand->getSearchDemand()->setStartDate($firstEventsFromDatetime);
+        $searchDemand = $eventDemand->getSearchDemand();
+        if ($searchDemand !== null) {
+            $searchDemand->setStartDate($firstEventsFromDatetime);
+        }
         $events = $this->eventRepository->findDemanded($eventDemand);
 
         $eventCount = $events->count();
@@ -96,7 +101,7 @@ class NewEventController extends \DERHANSEN\SfEventMgt\Controller\EventControlle
                     $events[$i] = clone $events[$j];
                     $events[$i]->setStartDate($startDate->getStartdatetime());
                     $endTimeStamp = $startDate->getStartdatetime()->getTimestamp();
-                    $endDateTime = (new DateTime())->setTimestamp($endTimeStamp+$eventDuration);
+                    $endDateTime = (new DateTime())->setTimestamp($endTimeStamp + $eventDuration);
                     $events[$i]->setEndDate($endDateTime);
                     $i++;
                 }
@@ -111,6 +116,10 @@ class NewEventController extends \DERHANSEN\SfEventMgt\Controller\EventControlle
             $events
         );
 
+        // TYPO3 v13: TSFE ist nicht mehr ueber getTypoScriptFrontendController()
+        // erreichbar; die Seiten-ID kommt aus dem Request-Attribut.
+        $currentPageId = $this->getFrontendPageInformation()->getId();
+
         $modifyCalendarViewVariablesEvent = new ModifyCalendarViewVariablesEvent(
             [
                 'events' => $events,
@@ -120,7 +129,7 @@ class NewEventController extends \DERHANSEN\SfEventMgt\Controller\EventControlle
                 'organisators' => $this->organisatorRepository->findDemanded($foreignRecordDemand),
                 'eventDemand' => $eventDemand,
                 'overwriteDemand' => $overwriteDemand,
-                'currentPageId' => $this->getTypoScriptFrontendController()->id,
+                'currentPageId' => $currentPageId,
                 'firstDayOfMonth' => DateTime::createFromFormat(
                     'd.m.Y',
                     sprintf('1.%s.%s', $currentMonth, $currentYear)
@@ -130,7 +139,8 @@ class NewEventController extends \DERHANSEN\SfEventMgt\Controller\EventControlle
                 'weekConfig' => $this->calendarService->getWeekConfig($firstDayOfWeek),
                 'settings' => $this->settings,
             ],
-            $this
+            $this,
+            $this->request
         );
         $this->eventDispatcher->dispatch($modifyCalendarViewVariablesEvent);
         $variables = $modifyCalendarViewVariablesEvent->getVariables();

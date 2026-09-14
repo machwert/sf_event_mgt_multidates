@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 return [
     \Machwert\SfEventMgtMultidates\Domain\Model\Event::class => [

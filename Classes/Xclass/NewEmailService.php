@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Machwert\SfEventMgtMultidates\Xclass;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\Mailer;
@@ -20,17 +21,19 @@ class NewEmailService extends \DERHANSEN\SfEventMgt\Service\EmailService
     /**
      * Sends an email, if sender and recipient is an valid email address
      *
+     * @param ServerRequestInterface $request Seit sf_event_mgt 9.x erster Parameter
      * @param string $sender The sender
      * @param string $recipient The recipient
      * @param string $subject The subject
      * @param string $body E-Mail body
      * @param string|null $name Optional sendername
-     * @param array $attachments Array of files (e.g. ['/absolute/path/doc.pdf'])
+     * @param array<string> $attachments Array of files (e.g. ['/absolute/path/doc.pdf'])
      * @param string|null $replyTo The reply-to mail
      *
      * @return bool true/false if message is sent
      */
     public function sendEmailMessage(
+        ServerRequestInterface $request,
         string $sender,
         string $recipient,
         string $subject,
@@ -42,11 +45,13 @@ class NewEmailService extends \DERHANSEN\SfEventMgt\Service\EmailService
 
         $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::class);
         $typoscript = $configurationManager->getConfiguration(
-            \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+            \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
+        );
         $useFluidEmail = (bool) $typoscript['plugin.']['tx_sfeventmgt_mulitdates.']['settings.']['useFluidEmail'];
 
         if(!$useFluidEmail) {
             return parent::sendEmailMessage(
+                $request,
                 $sender,
                 $recipient,
                 $subject,
@@ -78,9 +83,7 @@ class NewEmailService extends \DERHANSEN\SfEventMgt\Service\EmailService
                 }
             }
 
-            if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
-                $email->setRequest($GLOBALS['TYPO3_REQUEST']);
-            }
+            $email->setRequest($request);
             GeneralUtility::makeInstance(Mailer::class)->send($email);
             return true;
         }

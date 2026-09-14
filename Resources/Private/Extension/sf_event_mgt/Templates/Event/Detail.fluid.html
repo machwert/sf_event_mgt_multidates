@@ -1,5 +1,6 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
       xmlns:e="http://typo3.org/ns/DERHANSEN/SfEventMgt/ViewHelpers"
+      xmlns:mw="http://typo3.org/ns/Machwert/Theme/ViewHelpers"
       data-namespace-typo3-fluid="true">
 
 <f:layout name="Default" />
@@ -12,10 +13,9 @@
     </f:variable>
 
     <f:if condition="{event}">
-        <e:title pageTitle="{event.metaTitle}" />
-        <e:metaTag property="og:title" content="{event.metaTitle}" />
-        <e:metaTag name="keywords" content="{event.metaKeywords}" />
-        <e:metaTag name="description" content="{event.metaDescription}" />
+        <mw:metaTag property="og:title" content="{event.metaTitle}" />
+        <mw:metaTag name="keywords" content="{event.metaKeywords}" />
+        <mw:metaTag name="description" content="{event.metaDescription}" />
 
         <article>
             <div class="content">
@@ -100,9 +100,6 @@
                         <div class="event-detail-row">
                             <div class="event-detail-value event-price">
                                 <f:if condition="{event.currentPrice} == 0">
-                                    <f:then>
-                                        <f:translate key="event.freeofcharge" />
-                                    </f:then>
                                     <f:else>
                                         Kosten: <f:format.number decimals="2" decimalSeparator="," thousandsSeparator=".">{event.currentPrice}</f:format.number> {event.currency} inkl. USt.
                                         <br><br>Sie erhalten kurz nach Ihrer Buchung eine Rechnung in der die Umsatzsteuer (19%) aufgeführt ist.<br>

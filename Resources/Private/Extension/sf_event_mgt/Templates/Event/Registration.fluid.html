@@ -1,15 +1,15 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
       xmlns:e="http://typo3.org/ns/DERHANSEN/SfEventMgt/ViewHelpers"
+      xmlns:mw="http://typo3.org/ns/Machwert/Theme/ViewHelpers"
       data-namespace-typo3-fluid="true">
 
 <f:layout name="Default" />
 <f:section name="main">
 
     <f:if condition="{event}">
-        <e:title pageTitle="{event.metaTitle}" />
-        <e:metaTag property="og:title" content="{event.metaTitle}" />
-        <e:metaTag name="keywords" content="{event.metaKeywords}" />
-        <e:metaTag name="description" content="{event.metaDescription}" />
+        <mw:metaTag property="og:title" content="{event.metaTitle}" />
+        <mw:metaTag name="keywords" content="{event.metaKeywords}" />
+        <mw:metaTag name="description" content="{event.metaDescription}" />
 
         <f:render partial="Event/RegistrationForm" arguments="{_all}"/>
     </f:if>

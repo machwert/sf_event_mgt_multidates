@@ -8,7 +8,10 @@ return [
         'label_alt_force' => 1,
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'versioningWS' => false,
+        // Muss true sein: die Tabelle wird als Inline-Kind von
+        // tx_sfeventmgt_domain_model_event.startdates verwendet, und diese
+        // Tabelle ist workspace-faehig. TYPO3 migrierte das bisher automatisch.
+        'versioningWS' => true,
         'hideTable' => false,
         'origUid' => 't3_origuid',
         'delete' => 'deleted',

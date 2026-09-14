@@ -30,6 +30,7 @@ class Event extends \DERHANSEN\SfEventMgt\Domain\Model\Event
 
     public function __construct()
     {
+        $this->startdates = new ObjectStorage();
         $this->initializeObject();
     }
 
@@ -41,12 +42,18 @@ class Event extends \DERHANSEN\SfEventMgt\Domain\Model\Event
         $this->startdates = new ObjectStorage();
     }
 
+    /**
+     * @return ObjectStorage<Startdates>
+     */
     public function getStartdates(): ?ObjectStorage
     {
         return $this->startdates;
     }
 
-    public function setStartdates(?ObjectStorage $startdates): void
+    /**
+     * @param ObjectStorage<Startdates> $startdates
+     */
+    public function setStartdates(ObjectStorage $startdates): void
     {
         $this->startdates = $startdates;
     }
@@ -64,7 +71,7 @@ class Event extends \DERHANSEN\SfEventMgt\Domain\Model\Event
     /**
      * Returns all active startdates sorted by date ASC
      *
-     * @return array
+     * @return array<int, Startdates>
      */
     public function getActiveStartdates(): array
     {
@@ -72,20 +79,22 @@ class Event extends \DERHANSEN\SfEventMgt\Domain\Model\Event
         if ($this->getStartdates()) {
             $compareDate = new DateTime('tomorrow +1day midnight');
             foreach ($this->getStartdates() as $startdate) {
-                if ($startdate->getStartdatetime() >= $compareDate) {
-                    $activeStartdates[$startdate->getStartdatetime()->getTimestamp()] = $startdate;
+                $startdatetime = $startdate->getStartdatetime();
+                if ($startdatetime !== null && $startdatetime >= $compareDate) {
+                    $activeStartdates[$startdatetime->getTimestamp()] = $startdate;
                 }
             }
         }
         ksort($activeStartdates);
         return $activeStartdates;
     }
+
     public function getEventduration(): ?int
     {
         return $this->eventduration;
     }
 
-    public function setEventduration(?int $eventduration): void
+    public function setEventduration(int $eventduration): void
     {
         $this->eventduration = $eventduration;
     }
